@@ -27,7 +27,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $product = New Product();
+        $product = new Product();
         return view('products.create', compact('product'));
     }
 
@@ -41,13 +41,13 @@ class ProductController extends Controller
     {
         $data = $request->all();
 
-        if($request->has('image')){
+        if ($request->has('image')) {
             $image_path = $request->file('image')->store('medias');
             $data['featured_image_url'] = $image_path;
         }
         Product::create($data);
 
-        return redirect()->route('products.index')->with(['status' => 'Success', 'color'=>'green', 'message'=> 'Product created successfully']);
+        return redirect()->route('products.index')->with(['status' => 'Success', 'color' => 'green', 'message' => 'Product created successfully']);
     }
 
     /**
@@ -83,7 +83,7 @@ class ProductController extends Controller
     {
         $data = $request->all();
 
-        if($request->has('image')){
+        if ($request->has('image')) {
             Storage::delete($product->featured_image_url);
 
             $image_path = $request->file('image')->store('medias');
@@ -93,7 +93,7 @@ class ProductController extends Controller
         $product->fill($data);
         $product->save();
 
-        return redirect()->route('products.index')->with(['status' => 'Success', 'color'=>'blue', 'message'=> 'Product updated successfully']);
+        return redirect()->route('products.index')->with(['status' => 'Success', 'color' => 'blue', 'message' => 'Product updated successfully']);
     }
 
     /**
@@ -104,6 +104,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            $product->delete();
+            $result = ['status' => 'success', 'color' => 'green', 'message' => 'Deleted successfully'];
+        } catch (\Exception $e) {
+            $result = ['status' => 'error', 'color' => 'red', 'message' => 'Product cannot be delete'];
+        }
+
+        return redirect()->route('products.index')->with($result);
     }
 }
