@@ -15,8 +15,12 @@
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-            
-                <form class="grid gap-8 grid-cols-1" action="{{ route('products.store') }}" enctype="multipart/form-data" method="POST">
+
+                <form class="grid gap-8 grid-cols-1" @if($product->id)
+                    action="{{ route('products.update', ["product" => $product->id ]) }}" @else
+                    action="{{ route('products.store') }}" @endif enctype="multipart/form-data" method="POST">
+                    @if($product->id) {{ method_field("PUT") }} @endif
+
                     @csrf
                     <div class="shadow sm:rounded-md sm:overflow-hidden">
                         <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
@@ -26,14 +30,13 @@
                                         Name
                                     </label>
                                     <div class="mt-1 flex rounded-md shadow-sm">
-                                        <input type="text" name="name" id="name"
-                                            value="{{ old('name') }}"
+                                        <input type="text" name="name" id="name" value="{{ old('name', $product->name) }}"
                                             class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300">
                                     </div>
                                     @error('name')
-                                        <span class=" text-sm text-red-600" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class=" text-sm text-red-600" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -44,14 +47,13 @@
                                         Price
                                     </label>
                                     <div class="mt-1 flex rounded-md shadow-sm">
-                                        <input type="number" name="price" id="price"
-                                            value="{{ old('price') }}"
+                                        <input type="number" name="price" id="price" value="{{ old('price', $product->price) }}"
                                             class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300">
                                     </div>
                                     @error('price')
-                                        <span class=" text-sm text-red-600" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class=" text-sm text-red-600" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -71,7 +73,9 @@
                                         </svg>
 
                                         <div class="flex text-sm text-gray-600">
-                                           
+                                            @if($product->id)<img class="w-20"
+                                                            src="{{ asset("$product->featured_image_url") }}" /> @endif
+
                                             <label for="image"
                                                 class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                                                 <span>Upload a file</span>
@@ -84,9 +88,9 @@
                                         </p>
                                     </div>
                                     @error('image')
-                                        <span class=" text-sm text-red-600" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class=" text-sm text-red-600" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
