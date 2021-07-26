@@ -1,11 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Products') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
+
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <a href="{{ route('products.create') }}"
+                class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition mb-4">
+                {{ __('Add new') }}
+            </a>
+        </div>
+
+
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
@@ -30,8 +39,8 @@
                                             <td class="py-3 px-6 text-left whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="mr-2">
-                                                        <img class="w-6 h-6 rounded-full"
-                                                            src="https://randomuser.me/api/portraits/men/1.jpg" />
+                                                        <img class="w-10"
+                                                            src="{{ asset("$product->featured_image_url") }}" />
                                                     </div>
                                                     <span
                                                         class="font-medium">{{ str_pad($product->id, 4,0, STR_PAD_LEFT)  }}</span>
@@ -40,10 +49,6 @@
 
                                             <td class="py-3 px-6 text-left">
                                                 <div class="flex items-center">
-                                                    <div class="mr-2">
-                                                        <img class="w-6 h-6 rounded-full"
-                                                            src="https://randomuser.me/api/portraits/men/1.jpg" />
-                                                    </div>
                                                     <span>{{ $product->name }}</span>
                                                 </div>
                                             </td>
