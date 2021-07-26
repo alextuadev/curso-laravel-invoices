@@ -30,14 +30,12 @@
             </div>
             @endif
 
-
-
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
                 <div class="overflow-x-auto">
                     <div
                         class="min-w-screen bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
-                        <div class="w-full lg:w-5/6">
+                        <div class="w-full">
                             <div class="bg-white shadow-md rounded my-6">
                                 <table class="min-w-max w-full table-auto">
                                     <thead>
