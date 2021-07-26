@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvoiceStoreRequest;
+use App\Models\Buyer;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,8 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        $invoices = Invoice::with('buyer')->paginate(3);
+        return view('invoices.index', compact('invoices'));
     }
 
     /**
@@ -24,7 +27,9 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        $invoice = new Invoice();
+        $buyers = Buyer::all();
+        return view('invoices.create', compact('invoice', 'buyers'));
     }
 
     /**
@@ -33,9 +38,10 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InvoiceStoreRequest $request)
     {
-        //
+        $invoice = Invoice::create($request->validated());
+        return redirect()->route('invoices.add_products', ["invoice" => $invoice->id])->with(['status' => 'Success', 'color' => 'green', 'message' => 'Item added successfully']);
     }
 
     /**
@@ -57,7 +63,7 @@ class InvoiceController extends Controller
      */
     public function edit(Invoice $invoice)
     {
-        //
+        return view('inovices.create', compact('invoice'));
     }
 
     /**
@@ -69,7 +75,9 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
-        //
+        $invoice->fill($request->validated());
+        $invoice->save();
+        return redirect()->route('buyers.index')->with(['status' => 'Success', 'color' => 'blue', 'message' => 'Product updated successfully']);
     }
 
     /**
@@ -80,6 +88,13 @@ class InvoiceController extends Controller
      */
     public function destroy(Invoice $invoice)
     {
-        //
+        try {
+            $invoice->delete();
+            $result = ['status' => 'success', 'color' => 'green', 'message' => 'Deleted successfully'];
+        } catch (\Exception $e) {
+            $result = ['status' => 'error', 'color' => 'red', 'message' => 'Invoice cannot be delete'];
+        }
+
+        return redirect()->route('buyers.index')->with($result);
     }
 }

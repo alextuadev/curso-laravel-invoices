@@ -132,7 +132,9 @@
 
                                     </tbody>
                                 </table>
+                                {{ $buyers->links() }}
                             </div>
+
                         </div>
                     </div>
                 </div>
