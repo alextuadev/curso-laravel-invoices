@@ -77,7 +77,7 @@ class InvoiceController extends Controller
     {
         $invoice->fill($request->validated());
         $invoice->save();
-        return redirect()->route('buyers.index')->with(['status' => 'Success', 'color' => 'blue', 'message' => 'Product updated successfully']);
+        return redirect()->route('invoices.index')->with(['status' => 'Success', 'color' => 'blue', 'message' => 'Product updated successfully']);
     }
 
     /**
@@ -95,7 +95,7 @@ class InvoiceController extends Controller
             $result = ['status' => 'error', 'color' => 'red', 'message' => 'Invoice cannot be delete'];
         }
 
-        return redirect()->route('buyers.index')->with($result);
+        return redirect()->route('invoices.index')->with($result);
     }
 
 
