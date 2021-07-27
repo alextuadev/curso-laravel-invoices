@@ -97,4 +97,13 @@ class InvoiceController extends Controller
 
         return redirect()->route('buyers.index')->with($result);
     }
+
+
+
+    public function completeSend(Request $request, Invoice $invoice)
+    {
+
+
+
+    }
 }

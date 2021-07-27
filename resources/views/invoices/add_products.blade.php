@@ -9,9 +9,9 @@
 
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <a href="{{ route('buyers.create') }}"
-                class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition mb-4">
-                {{ __('Complete and send') }}
+            <a href="{{ route('invoices.index') }}"
+                class="inline-flex items-center px-4 py-2 bg-gray-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 active:bg-gray-800 focus:outline-none focus:border-gray-800 focus:ring focus:ring-gray-200 disabled:opacity-25 transition mb-4">
+                {{ __('Invoice List') }}
             </a>
         </div>
 
@@ -157,7 +157,7 @@
                 </form>
 
                 <div class="w-full">
-                    <div class="bg-white rounded my-6">
+                    <div class="bg-white rounded my-2">
                         <div class="overflow-x-auto">
                             <h3 class="font-semibold text-xl text-gray-800 leading-tight px-5 py-5">Details invoice
                             </h3>
@@ -210,14 +210,14 @@
                                                 </tr>
 
                                                 @php
-                                                 $total = $total + $item->total_product;
+                                                $total = $total + $item->total_product;
                                                 @endphp
                                                 @endforeach
                                                 <tr>
                                                     <td colspan="4" class="py-3 px-6 text-left whitespace-nowrap">
                                                         Total Invoice
                                                     </td>
-                                                    <td  class="py-3 px-6 text-center whitespace-nowrap"> 
+                                                    <td class="py-3 px-6 text-center whitespace-nowrap">
                                                         {{ $total }}
                                                     </td>
                                                 </tr>
@@ -227,6 +227,18 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class=" text-right">
+
+                        <form method="POST" action="{{ route('invoices.complete', ['invoice'=> $invoice->id]) }}">
+                            @csrf
+                            <a href="{{ route('invoices.complete', ['invoice'=> $invoice->id]) }}" onclick="event.preventDefault();
+                                            this.closest('form').submit();"
+                                class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition mb-4">
+                                {{ __('Complete and send') }}
+
+                            </a>
+                        </form>
                     </div>
                 </div>
 

@@ -28,10 +28,15 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('/products', ProductController::class);
+    
     Route::resource('/buyers', BuyerController::class);
+    
     Route::resource('/invoices', InvoiceController::class);
-    Route::resource('/invoice-details', InvoiceDetailController::class);
-    Route::get('/invoices/add-product/{invoice}/', [InvoiceDetailController::class, 'create'])->name('invoices.add_products');
+    
+    Route::post('/invoices/{invoice}/complete', [InvoiceController::class, 'completeSend'])->name('invoices.complete');
 
+    Route::resource('/invoice-details', InvoiceDetailController::class);
+    
+    Route::get('/invoices/add-product/{invoice}/', [InvoiceDetailController::class, 'create'])->name('invoices.add_products');
 
 });
