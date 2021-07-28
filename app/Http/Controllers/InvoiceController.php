@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InvoiceStoreRequest;
+use App\Mail\InvoiceMail;
 use App\Models\Buyer;
 use App\Models\Invoice;
+use App\Models\InvoiceDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class InvoiceController extends Controller
 {
@@ -102,8 +105,21 @@ class InvoiceController extends Controller
 
     public function completeSend(Request $request, Invoice $invoice)
     {
+        $details = InvoiceDetail::with('product')
+            ->where('invoice_id', $invoice->id)
+            ->get();
 
+        try {
+            Mail::to($invoice->buyer->email)
+                ->queue(new InvoiceMail($invoice, $details));
+            $result = ['status' => 'success', 'color' => 'green', 'message' => 'Mail sent successfully'];
+        } catch (\Exception $e) {
+            $result = ['status' => 'success', 'color' => 'green', 'message' => $e->getMessage()];
+        }
 
+        $invoice->status = 'complete';
+        $invoice->save();
 
+        return redirect()->route('invoices.index')->with($result);
     }
 }

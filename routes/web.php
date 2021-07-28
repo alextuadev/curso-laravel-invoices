@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
     
     Route::resource('/invoices', InvoiceController::class);
     
-    Route::post('/invoices/{invoice}/complete', [InvoiceController::class, 'completeSend'])->name('invoices.complete');
+    Route::post('/invoices/complete/{invoice}', [InvoiceController::class, 'completeSend'])->name('invoices.complete');
 
     Route::resource('/invoice-details', InvoiceDetailController::class);
     
